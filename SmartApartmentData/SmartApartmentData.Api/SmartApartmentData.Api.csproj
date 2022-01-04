@@ -5,7 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Elasticsearch.Net" Version="7.16.0" />
+    <PackageReference Include="NEST" Version="7.16.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartApartmentData.Core\SmartApartmentData.Core.csproj" />
+    <ProjectReference Include="..\SmartApartmentData.Domain\SmartApartmentData.Domain.csproj" />
+    <ProjectReference Include="..\SmartApartmentData.Persistence\SmartApartmentData.Persistence.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -7,6 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using SmartApartmentData.Core.Services;
+using SmartApartmentData.Core.Services.Interfaces;
+using SmartApartmentData.Persistence.Repository;
+using SmartApartmentData.Persistence.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,6 +52,8 @@ namespace SmartApartmentData.Api
 
             });
 
+            services.AddTransient<ISearchService, SearchService>();
+            services.AddHttpClient<IOpenSearchRepository, OpenSearchRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartApartmentData.Domain",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartApartmentData.Tests", "SmartApartmentData.Tests\SmartApartmentData.Tests.csproj", "{551CCF7E-02D4-4098-A397-961F5A8AC3AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAprtmentData.Indexer", "SmartAprtmentData.Indexer\SmartAprtmentData.Indexer.csproj", "{5F10BD46-CB37-4C50-A4F3-BD02DD5F7943}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{551CCF7E-02D4-4098-A397-961F5A8AC3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{551CCF7E-02D4-4098-A397-961F5A8AC3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{551CCF7E-02D4-4098-A397-961F5A8AC3AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F10BD46-CB37-4C50-A4F3-BD02DD5F7943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F10BD46-CB37-4C50-A4F3-BD02DD5F7943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F10BD46-CB37-4C50-A4F3-BD02DD5F7943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F10BD46-CB37-4C50-A4F3-BD02DD5F7943}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
