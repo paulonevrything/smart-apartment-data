@@ -7,8 +7,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Nest;
 using SmartApartmentData.Core.Services;
 using SmartApartmentData.Core.Services.Interfaces;
+using SmartApartmentData.Domain;
+using SmartApartmentData.Domain.Model;
 using SmartApartmentData.Persistence.Repository;
 using SmartApartmentData.Persistence.Repository.Interfaces;
 using System;
@@ -33,6 +36,11 @@ namespace SmartApartmentData.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            // Add singleton Elastic client
+            services.AddSingleton<IElasticClient>(new OpenSearchConfiguration<PropertySchema>(Constants.PropertyIndex).GetClient());
+
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -52,8 +60,8 @@ namespace SmartApartmentData.Api
 
             });
 
+            services.AddTransient<IOpenSearchRepository, OpenSearchRepository>();
             services.AddTransient<ISearchService, SearchService>();
-            services.AddHttpClient<IOpenSearchRepository, OpenSearchRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

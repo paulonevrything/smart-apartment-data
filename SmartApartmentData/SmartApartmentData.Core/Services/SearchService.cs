@@ -10,27 +10,30 @@ namespace SmartApartmentData.Core.Services
 {
     public class SearchService : ISearchService
     {
-        private readonly IOpenSearchRepository _openSearch;
+        private readonly IOpenSearchRepository _openSearchRepository;
         readonly ILogger<SearchService> _logger;
         
-        public SearchService(IOpenSearchRepository openSearch, ILogger<SearchService> logger)
+        public SearchService(IOpenSearchRepository openSearchRepository, ILogger<SearchService> logger)
         {
-            _openSearch = openSearch;
+            _openSearchRepository = openSearchRepository;
             _logger = logger;
         }
 
-        public Task<string> SearchAsync(string searchPhrase, string market, int limit)
+        public async Task<string> SearchAsync(string searchPhrase, string market, int limit)
         {
             try
             {
+
+                var result = await _openSearchRepository.SearchAsync(searchPhrase, market, limit);
 
             }
             catch (Exception ex)
             {
 
+                _logger.LogError(ex.Message);
             }
 
-            throw new NotImplementedException();
+            return "done";
         }
     }
 }

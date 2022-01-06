@@ -11,18 +11,32 @@ namespace SmartAprtmentData.Indexer
 		private static ElasticClient PropertyClient { get; set; }
 		private static DataReader<PropertySchema> PropertyDataReader { get; set; }
 
+		private static ElasticClient ManagementClient { get; set; }
+		private static DataReader<ManagementSchema> ManagementReader { get; set; }
+
 		static void Main(string[] args)
 		{
 
 			// Index Properties
 			OpenSearchConfiguration<PropertySchema> propertyRef = new OpenSearchConfiguration<PropertySchema>(Constants.PropertyIndex);
-			PropertyClient = propertyRef.GetClient();
-			var propertyDirectory = OpenSearchConfiguration<PropertySchema>.PropertyPath;
+            PropertyClient = propertyRef.GetClient();
+            var propertyDirectory = OpenSearchConfiguration<PropertySchema>.PropertyPath;
 
-			PropertyDataReader = new DataReader<PropertySchema>(propertyDirectory);
+            PropertyDataReader = new DataReader<PropertySchema>(propertyDirectory);
 
-			CreateIndex<PropertySchema>(PropertyClient, Constants.PropertyIndex);
+            CreateIndex<PropertySchema>(PropertyClient, Constants.PropertyIndex);
             IndexData(PropertyClient, PropertyDataReader, Constants.PropertyIndex);
+
+
+            // Index Management
+            OpenSearchConfiguration<ManagementSchema> managementRef = new OpenSearchConfiguration<ManagementSchema>(Constants.ManagementIndex);
+			ManagementClient = managementRef.GetClient();
+			var managementDirectory = OpenSearchConfiguration<ManagementSchema>.ManagementPath;
+
+			ManagementReader = new DataReader<ManagementSchema>(managementDirectory);
+
+			 CreateIndex<ManagementSchema>(ManagementClient, Constants.ManagementIndex);
+            IndexData(ManagementClient, ManagementReader, Constants.ManagementIndex);
 
 			Console.WriteLine("Press any key to exit.");
 			Console.ReadKey();
@@ -39,10 +53,10 @@ namespace SmartAprtmentData.Indexer
 
 		private static void IndexData<T>(ElasticClient client, DataReader<T> dataReader, string index) where T : class
         {
-			Console.WriteLine($"Reading {typeof(T)} data from file ...");
+			Console.WriteLine($"Reading data from file ...");
 			var documentData = dataReader.GetData();
 
-			Console.Write("Indexing documents into Elasticsearch...");
+			Console.WriteLine("Indexing documents into Elasticsearch...");
 			client.IndexMany<T>(documentData, index);
 
 		}

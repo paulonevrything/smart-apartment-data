@@ -24,7 +24,9 @@ namespace SmartApartmentData.Domain
 				);
 		}
 
+
+		// TODO: Move these to appsettings
 		public static string PropertyPath => @"C:\Users\Paul Olabisi\Desktop\property-data\properties.json";
-		public static string ManagementPath => @"C:\management-data";
+		public static string ManagementPath => @"mgmt.json";
 	}
 }
