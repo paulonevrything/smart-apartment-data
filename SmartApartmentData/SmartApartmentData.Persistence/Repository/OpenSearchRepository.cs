@@ -36,7 +36,7 @@ namespace SmartApartmentData.Persistence.Repository
                 }
             };
 
-            if(markets.Length > 0 && !string.IsNullOrEmpty(markets[0]))
+            if(markets.Length > 0)
             {
                 boolQuery.Filter = new QueryContainer[] { new MultiMatchQuery
                 { 

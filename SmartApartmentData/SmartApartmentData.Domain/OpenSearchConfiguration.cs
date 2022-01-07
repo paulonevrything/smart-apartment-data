@@ -1,7 +1,7 @@
-﻿using Nest;
+﻿using Microsoft.Extensions.Configuration;
+using Nest;
 using SmartApartmentData.Domain.Model;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace SmartApartmentData.Domain
@@ -13,12 +13,21 @@ namespace SmartApartmentData.Domain
 
 		public static ElasticClient GetClient() => new ElasticClient(_connectionSettings);
 
+        private static MySettings _settings;
 
         static OpenSearchConfiguration()
         {
-			// TODO: Place connection strings and credentials in appsettings
-			_connectionSettings = new ConnectionSettings(new Uri("https://search-smartapartmentdata-u6bjb6wsnmeshqrfidqjd7lp4e.us-east-2.es.amazonaws.com/"))
-				.BasicAuthentication("root", "Qwertyuiop123$")
+
+            IConfiguration configuration = new ConfigurationBuilder()
+               .AddJsonFile("appsettings.json", true, true)
+               .Build();
+
+            var settings = configuration.GetSection("MySettings").Get<MySettings>();
+
+            _settings = settings;
+
+            _connectionSettings = new ConnectionSettings(new Uri(_settings.OpenSearch.DomainUrl))
+				.BasicAuthentication(_settings.OpenSearch.Username, _settings.OpenSearch.Password)
 				.DefaultIndex(Constants.PropertyIndex)
 				.DefaultMappingFor<PropertyModel>(i => i
 					.IndexName(Constants.PropertyIndex).IdProperty(f => f.PropertyID))
@@ -54,9 +63,7 @@ namespace SmartApartmentData.Domain
                 });
 		}
 
-
-		// TODO: Move these to appsettings
-		public static string PropertyPath => @"C:\Users\Paul Olabisi\Desktop\property-data\properties.json";
-		public static string ManagementPath => @"C:\Users\Paul Olabisi\Desktop\property-data\mgmt.json";
+		public static string PropertyPath => _settings.PropertyDataFilePath;
+		public static string ManagementPath => _settings.ManagementDataFilePath;
 	}
 }
