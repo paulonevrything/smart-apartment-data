@@ -16,6 +16,8 @@ namespace SmartApartmentData.Persistence.Repository
         private readonly IElasticClient _client;
         private const string PROPERTY_MARKET_KEY = "Property.Market";
         private const string MGMT_MARKET_KEY = "Mgmt.Market";
+        private static readonly string[] SEARCHABLE_FIELDS = new string[] { "Mgmt.Name", "Mgmt.Market", "Mgmt.State", "Property.State", "Property.Name", "Property.FormerName",
+                                                                               "Property.StreetAddress", "Property.City", "Property.Market", };
 
         public OpenSearchRepository(IElasticClient client)
         {
@@ -30,6 +32,7 @@ namespace SmartApartmentData.Persistence.Repository
             boolQuery.Must = new QueryContainer[] { new MultiMatchQuery
                 {
                     Query = searchPhrase,
+                    Fields = SEARCHABLE_FIELDS
                 }
             };
 
