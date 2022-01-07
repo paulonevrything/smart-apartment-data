@@ -27,14 +27,16 @@ namespace SmartApartmentData.Core.Services
 
                 var result = _openSearchRepository.Search(searchPhrase, markets, limit);
 
+                return result;
+
             }
             catch (Exception ex)
             {
 
                 _logger.LogError(ex.Message);
+                throw;
             }
 
-            return "done";
         }
     }
 }

@@ -8,6 +8,6 @@ namespace SmartApartmentData.Persistence.Repository.Interfaces
 {
     public interface IOpenSearchRepository
     {
-        ISearchResponse<object> Search(string searchPhrase, string[] markets, int limit);
+        string Search(string searchPhrase, string[] markets, int limit);
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Nest;
+using Newtonsoft.Json;
 using SmartApartmentData.Domain;
 using SmartApartmentData.Domain.Model;
 using SmartApartmentData.Persistence.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,7 +26,7 @@ namespace SmartApartmentData.Persistence.Repository
             _client = client;
         }
 
-        public ISearchResponse<object> Search(string searchPhrase, string[] markets, int limit)
+        public string Search(string searchPhrase, string[] markets, int limit)
         {
 
             var boolQuery = new BoolQuery();
@@ -51,13 +53,13 @@ namespace SmartApartmentData.Persistence.Repository
                 .Query(c => boolQuery)
             );
 
-            // TODO: Retrieve data from searchResponse
 
-            foreach (var document in searchResponse.Documents)
-                Console.WriteLine($"document is a {document.GetType().Name}");
+            var resultDocs = searchResponse.Documents?.ToList();
+
+            var jsonData = JsonConvert.SerializeObject(resultDocs, Formatting.Indented);
 
 
-            return searchResponse;
+            return jsonData;
         }
     }
 }

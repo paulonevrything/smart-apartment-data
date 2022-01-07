@@ -12,6 +12,8 @@ namespace SmartApartmentData.Api.Controllers
     [ApiController]
     public class SearchController : ControllerBase
     {
+        // TODO: Write tests
+
         private readonly ISearchService _searchService;
         public SearchController(ISearchService searchService)
         {
@@ -19,12 +21,12 @@ namespace SmartApartmentData.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search([FromQuery] string searchPhrase, [FromQuery] string[] markets, [FromQuery] int limit = 25)
+        public IActionResult Search([FromQuery] string searchPhrase, [FromQuery] string[] markets, [FromQuery] int limit = 25)
         {
             if (String.IsNullOrEmpty(searchPhrase))
                 return BadRequest();
 
-            return Ok( _searchService.Search(searchPhrase, markets, limit));
+            return Ok(_searchService.Search(searchPhrase, markets, limit));
         }
 
     }
