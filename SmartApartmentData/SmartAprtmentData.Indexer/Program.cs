@@ -8,59 +8,102 @@ namespace SmartAprtmentData.Indexer
 {
     class Program
     {
-		private static ElasticClient PropertyClient { get; set; }
-		private static DataReader<PropertySchema> PropertyDataReader { get; set; }
 
-		private static ElasticClient ManagementClient { get; set; }
-		private static DataReader<ManagementSchema> ManagementReader { get; set; }
+        public static string PropertyIndex => Constants.PropertyIndex;
 
-		static void Main(string[] args)
-		{
+        public static string ManagementIndex => Constants.ManagementIndex;
 
-			// Index Properties
-			OpenSearchConfiguration<PropertySchema> propertyRef = new OpenSearchConfiguration<PropertySchema>(Constants.PropertyIndex);
-            PropertyClient = propertyRef.GetClient();
-            var propertyDirectory = OpenSearchConfiguration<PropertySchema>.PropertyPath;
+        // private static ElasticClient PropertyClient { get; set; }
+        private static DataReader<PropertySchema> PropertyDataReader { get; set; }
 
-            PropertyDataReader = new DataReader<PropertySchema>(propertyDirectory);
+        // private static ElasticClient ManagementClient { get; set; }
+        private static DataReader<ManagementSchema> ManagementReader { get; set; }
 
-            CreateIndex<PropertySchema>(PropertyClient, Constants.PropertyIndex);
-            IndexData(PropertyClient, PropertyDataReader, Constants.PropertyIndex);
-
-
-            // Index Management
-            OpenSearchConfiguration<ManagementSchema> managementRef = new OpenSearchConfiguration<ManagementSchema>(Constants.ManagementIndex);
-			ManagementClient = managementRef.GetClient();
-			var managementDirectory = OpenSearchConfiguration<ManagementSchema>.ManagementPath;
-
-			ManagementReader = new DataReader<ManagementSchema>(managementDirectory);
-
-			 CreateIndex<ManagementSchema>(ManagementClient, Constants.ManagementIndex);
-            IndexData(ManagementClient, ManagementReader, Constants.ManagementIndex);
-
-			Console.WriteLine("Press any key to exit.");
-			Console.ReadKey();
-		}
-
-		private static void CreateIndex<T>(ElasticClient client, string index) where T : class
-		{
-			client.Indices.Delete(index);
-			client.Indices.Create(index, i => i
-				.Map<T>(p => p.AutoMap())  
-				// TODO: Do Proper Mapping
-			);
-		}
-
-		private static void IndexData<T>(ElasticClient client, DataReader<T> dataReader, string index) where T : class
+        static void Main(string[] args)
         {
-			Console.WriteLine($"Reading data from file ...");
-			var documentData = dataReader.GetData();
 
-			Console.WriteLine("Indexing documents into Elasticsearch...");
-			client.IndexMany<T>(documentData, index);
+            ElasticClient elasticClient = OpenSearchConfiguration.GetClient();
 
-		}
+            CreateIndex(elasticClient);
+
+            PropertyDataReader = new DataReader<PropertySchema>(OpenSearchConfiguration.PropertyPath);
+
+            ManagementReader = new DataReader<ManagementSchema>(OpenSearchConfiguration.ManagementPath);
+
+            IndexData(elasticClient);
+
+            elasticClient.Indices.Refresh(($"{Constants.PropertyIndex},{Constants.ManagementIndex}"));
 
 
-	}
+            Console.WriteLine("Press any key to exit.");
+            Console.ReadKey();
+        }
+
+        private static void CreateIndex(ElasticClient client)
+        {
+
+            foreach (var index in new[] { PropertyIndex, ManagementIndex })
+            {
+                if (client.Indices.Exists(index).Exists)
+                    client.Indices.Delete(index);
+
+                if (index == PropertyIndex)
+                {
+
+                    client.Indices.Create(index, c => c
+                        .Map<PropertyModel>(map => map
+                            .AutoMap()
+                            .Properties(p => p
+                                .Text(c => c
+                                    .Name(n => n.Name)
+                                    .Analyzer("standard"))
+                                .Text(c => c
+                                    .Name(n => n.FormerName)
+                                    .Analyzer("standard"))
+                            )));
+
+                }
+
+                if (index == ManagementIndex)
+                {
+
+                    client.Indices.Create(index, c => c
+                        .Map<ManagementModel>(map => map
+                            .AutoMap()
+                            .Properties(p => p
+                                .Text(c => c
+                                    .Name(n => n.Name)
+                                    .Analyzer("standard"))
+                                .Text(c => c
+                                    .Name(n => n.Market)
+                                    .Analyzer("standard"))
+                            )));
+
+                }
+            }
+
+        }
+
+        private static void IndexData(ElasticClient client)
+        {
+            Console.WriteLine("Reading Property data from file ...");
+            var propertyData = PropertyDataReader.GetData();
+
+
+            Console.WriteLine("Indexing Property documents into Elasticsearch...");
+            client.IndexMany(propertyData, PropertyIndex);
+
+            Console.WriteLine("***************************************");
+
+            Console.WriteLine("Reading Management data from file ...");
+            var mamnagementData = ManagementReader.GetData();
+
+
+            Console.WriteLine("Indexing Management documents into Elasticsearch...");
+            client.IndexMany(mamnagementData, ManagementIndex);
+
+        }
+
+
+    }
 }

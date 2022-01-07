@@ -38,7 +38,7 @@ namespace SmartApartmentData.Api
             services.AddControllers();
 
             // Add singleton Elastic client
-            services.AddSingleton<IElasticClient>(new OpenSearchConfiguration<PropertySchema>(Constants.PropertyIndex).GetClient());
+            services.AddSingleton<IElasticClient>(OpenSearchConfiguration.GetClient());
 
 
             services.AddSwaggerGen(options =>

@@ -18,13 +18,14 @@ namespace SmartApartmentData.Domain.Data
         public List<T> GetData()
         {
 
-            var jsonStr = string.Empty;
+            var jsonString = string.Empty;
+
             using (var str = new StreamReader(_filePath))
             {
-                jsonStr = str.ReadToEnd();
+                jsonString = str.ReadToEnd();
             }
 
-            return JsonConvert.DeserializeObject<List<T>>(jsonStr);
+            return JsonConvert.DeserializeObject<List<T>>(jsonString);
 
         }
     }
