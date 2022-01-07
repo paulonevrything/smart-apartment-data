@@ -19,12 +19,12 @@ namespace SmartApartmentData.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search([FromQuery] string searchPhrase, [FromQuery] string market, [FromQuery] int limit = 205)
+        public async Task<IActionResult> Search([FromQuery] string searchPhrase, [FromQuery] string[] markets, [FromQuery] int limit = 205)
         {
             if (String.IsNullOrEmpty(searchPhrase))
                 return BadRequest();
 
-            return Ok(await _searchService.SearchAsync(searchPhrase, market, limit));
+            return Ok( _searchService.Search(searchPhrase, markets, limit));
         }
 
     }

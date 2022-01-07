@@ -7,6 +7,6 @@ namespace SmartApartmentData.Core.Services.Interfaces
 {
     public interface ISearchService
     {
-        Task<string> SearchAsync(string searchPhrase, string market, int limit);
+        string Search(string searchPhrase, string[] markets, int limit);
     }
 }

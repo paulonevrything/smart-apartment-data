@@ -13,10 +13,8 @@ namespace SmartAprtmentData.Indexer
 
         public static string ManagementIndex => Constants.ManagementIndex;
 
-        // private static ElasticClient PropertyClient { get; set; }
         private static DataReader<PropertySchema> PropertyDataReader { get; set; }
 
-        // private static ElasticClient ManagementClient { get; set; }
         private static DataReader<ManagementSchema> ManagementReader { get; set; }
 
         static void Main(string[] args)

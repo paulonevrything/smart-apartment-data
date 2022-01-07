@@ -19,12 +19,13 @@ namespace SmartApartmentData.Core.Services
             _logger = logger;
         }
 
-        public async Task<string> SearchAsync(string searchPhrase, string market, int limit)
+        public string Search(string searchPhrase, string[] markets, int limit)
         {
             try
             {
+                // TODO: Do autocomplete
 
-                var result = await _openSearchRepository.SearchAsync(searchPhrase, market, limit);
+                var result = _openSearchRepository.Search(searchPhrase, markets, limit);
 
             }
             catch (Exception ex)

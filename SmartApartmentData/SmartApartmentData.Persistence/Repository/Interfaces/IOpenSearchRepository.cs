@@ -8,6 +8,6 @@ namespace SmartApartmentData.Persistence.Repository.Interfaces
 {
     public interface IOpenSearchRepository
     {
-        Task<ISearchResponse<dynamic>> SearchAsync(string searchPhrase, string market, int limit);
+        ISearchResponse<object> Search(string searchPhrase, string[] markets, int limit);
     }
 }

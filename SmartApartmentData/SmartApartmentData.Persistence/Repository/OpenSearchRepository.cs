@@ -14,50 +14,47 @@ namespace SmartApartmentData.Persistence.Repository
     {
 
         private readonly IElasticClient _client;
+        private const string PROPERTY_MARKET_KEY = "Property.Market";
+        private const string MGMT_MARKET_KEY = "Mgmt.Market";
 
         public OpenSearchRepository(IElasticClient client)
         {
             _client = client;
         }
 
-        public async Task<ISearchResponse<object>> SearchAsync(string searchPhrase, string market, int limit)
+        public ISearchResponse<object> Search(string searchPhrase, string[] markets, int limit)
         {
 
+            var boolQuery = new BoolQuery();
 
-            // var boolQuery = new BoolQuery();
-            // boolQuery.Must = new QueryContainer[] { new MultiMatchQuery
-            //     {
-            //         Query = "stone",
-            //         Fields = "*"
-            //     }
-            // };
+            boolQuery.Must = new QueryContainer[] { new MultiMatchQuery
+                {
+                    Query = searchPhrase,
+                }
+            };
 
-            // var searchResponse = elasticClient.Search<object>(s => s
-            //     .Index(($"{Constants.PropertyIndex},{Constants.ManagementIndex}"))
-            //     .Size(150)
-            //     .Query(q => q
-            //         .QueryString(m => m
-            //             .Query("stone")
-            //         ))
-            // );
+            if(markets.Length > 0 && !string.IsNullOrEmpty(markets[0]))
+            {
+                boolQuery.Filter = new QueryContainer[] { new MultiMatchQuery
+                { 
+                    Fields = Infer.Field(PROPERTY_MARKET_KEY).And(MGMT_MARKET_KEY),
+                    Query =  string.Join(" ", markets)
+                }};
+            }
 
-            // foreach (var document in searchResponse.Documents)
-            //     Console.WriteLine($"document is a {document.GetType().Name}");
-
-
-            var result = _client.Search<dynamic>(s => s
-                .Index($"{Constants.PropertyIndex},{Constants.ManagementIndex}")
+            var searchResponse = _client.Search<dynamic>(s => s
+                .Index(($"{Constants.PropertyIndex},{Constants.ManagementIndex}"))
                 .Size(limit)
-                .Query(q => q
-                    .QueryString(m => m
-                        .Query(searchPhrase)
-                    ))
+                .Query(c => boolQuery)
+            );
 
-                );
+            // TODO: Retrieve data from searchResponse
 
-            //result.
+            foreach (var document in searchResponse.Documents)
+                Console.WriteLine($"document is a {document.GetType().Name}");
 
-            return result;
+
+            return searchResponse;
         }
     }
 }
