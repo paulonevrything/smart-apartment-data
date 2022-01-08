@@ -39,6 +39,7 @@ namespace SmartAprtmentData.Indexer
 
         private static void CreateIndex(ElasticClient client)
         {
+            // TODO: Go over indexing again and do cleanups
 
             foreach (var index in new[] { PropertyIndex, ManagementIndex })
             {
@@ -101,6 +102,30 @@ namespace SmartAprtmentData.Indexer
             client.IndexMany(mamnagementData, ManagementIndex);
 
         }
+
+        private static AnalysisDescriptor Analysis(AnalysisDescriptor analysis) => analysis
+                        .Tokenizers(tokenizers => tokenizers
+                            .Pattern("nuget-id-tokenizer", p => p.Pattern(@"\W+"))
+                        )
+                        .TokenFilters(tokenfilters => tokenfilters
+                            .WordDelimiter("nuget-id-words", w => w
+                                .SplitOnCaseChange()
+                                .PreserveOriginal()
+                                .SplitOnNumerics()
+                                .GenerateNumberParts(false)
+                                .GenerateWordParts()
+                            )
+                        )
+                        .Analyzers(analyzers => analyzers
+                            .Custom("nuget-id-analyzer", c => c
+                                .Tokenizer("nuget-id-tokenizer")
+                                .Filters("nuget-id-words", "lowercase")
+                            )
+                            .Custom("nuget-id-keyword", c => c
+                                .Tokenizer("keyword")
+                                .Filters("lowercase")
+                            )
+                        );
 
 
     }

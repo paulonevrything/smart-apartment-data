@@ -2,9 +2,6 @@
 using SmartApartmentData.Core.Services.Interfaces;
 using SmartApartmentData.Persistence.Repository.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartApartmentData.Core.Services
 {

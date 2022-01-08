@@ -1,13 +1,8 @@
 ﻿using Nest;
 using Newtonsoft.Json;
 using SmartApartmentData.Domain;
-using SmartApartmentData.Domain.Model;
 using SmartApartmentData.Persistence.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartApartmentData.Persistence.Repository
 {
