@@ -53,27 +53,27 @@ namespace SmartAprtmentData.Indexer
 
                     client.Indices.Create(index, c => c
                         .Settings(c => c
-                        .Analysis(Analysis))
-                        .Map<PropertyModel>(map => map
+                        .Analysis(Analysis))                        
+                            .Map<PropertySchema>(map => map
                             .AutoMap()
                             .Properties(p => p
                                 .Text(c => c
-                                    .Name(n => n.Name)
+                                    .Name(n => n.Property.Name)
                                     .Analyzer(SMART_ANALYZER_KEY))
                                 .Text(c => c
-                                    .Name(n => n.FormerName)
+                                    .Name(n => n.Property.FormerName)
                                     .Analyzer(SMART_ANALYZER_KEY))
                                 .Text(c => c
-                                    .Name(n => n.City)
+                                    .Name(n => n.Property.City)
                                     .Analyzer(SMART_ANALYZER_KEY))
                                 .Text(c => c
-                                    .Name(n => n.Market)
+                                    .Name(n => n.Property.Market)
                                     .Analyzer(SMART_ANALYZER_KEY))
                                 .Text(c => c
-                                    .Name(n => n.State)
+                                    .Name(n => n.Property.State)
                                     .Analyzer(SMART_ANALYZER_KEY))
                                 .Text(c => c
-                                    .Name(n => n.StreetAddress)
+                                    .Name(n => n.Property.StreetAddress)
                                     .Analyzer(SMART_ANALYZER_KEY))
                             )));
 
@@ -85,17 +85,17 @@ namespace SmartAprtmentData.Indexer
                     client.Indices.Create(index, c => c
                         .Settings(c => c
                         .Analysis(Analysis))
-                        .Map<ManagementModel>(map => map
+                        .Map<ManagementSchema>(map => map
                             .AutoMap()
                             .Properties(p => p
                                 .Text(c => c
-                                    .Name(n => n.Name)
+                                    .Name(n => n.Mgmt.Name)
                                     .Analyzer(SMART_ANALYZER_KEY))
                                 .Text(c => c
-                                    .Name(n => n.Market)
+                                    .Name(n => n.Mgmt.Market)
                                     .Analyzer(SMART_ANALYZER_KEY))
                                 .Text(c => c
-                                    .Name(n => n.State)
+                                    .Name(n => n.Mgmt.State)
                                     .Analyzer(SMART_ANALYZER_KEY))
                             )));
 
@@ -125,30 +125,25 @@ namespace SmartAprtmentData.Indexer
         }
 
         private static AnalysisDescriptor Analysis(AnalysisDescriptor analysis) => analysis
-
-                        // Define Edge n-gram tokenizer for autocomplete
-                        .Tokenizers(tok => tok
-                            .EdgeNGram(AUTOCOMPLETE_SEARCH_KEY, e => e
-                                .MinGram(3)
-                                .MaxGram(5)
-                                .TokenChars(TokenChar.Letter, TokenChar.Digit)
-                            )
-                        )
-
-                        // Setup Stop Token Filter to remove stop words
-                        .TokenFilters(tokenfilters => tokenfilters
-                            .Stop(STOP_WORDS_KEY, w => w
-                                .StopWords("_english_", "trim", "lowercase")
-                            )
-                        )
-
-                        // Bring it all together in a custom analyzer
-                        .Analyzers(analyzers => analyzers
-                            .Custom(SMART_ANALYZER_KEY, c => c
-                                .Tokenizer(AUTOCOMPLETE_SEARCH_KEY)
-                                .Filters(STOP_WORDS_KEY)
-                            )
-                        );
+            
+            // Define a custom analyser
+            .Analyzers(analyzers => analyzers
+                .Custom(SMART_ANALYZER_KEY, c => c
+                    .Tokenizer(AUTOCOMPLETE_SEARCH_KEY)
+                    .Filters(STOP_WORDS_KEY)
+                 ))
+                // Define Edge n-gram tokenizer for autocomplete
+                .Tokenizers(tok => tok
+                    .EdgeNGram(AUTOCOMPLETE_SEARCH_KEY, e => e
+                        .MinGram(2)
+                        .MaxGram(25)
+                        .TokenChars(TokenChar.Letter, TokenChar.Digit)
+                            ))
+                // Setup Stop Token Filter to remove stop words
+                .TokenFilters(tokenfilters => tokenfilters
+                    .Stop(STOP_WORDS_KEY, w => w
+                        .StopWords("_english_"))
+                            );
 
 
     }
