@@ -9,6 +9,8 @@ namespace SmartAprtmentData.Indexer
     class Program
     {
         private const string SMART_ANALYZER_KEY = "smart-analyzer";
+        private const string STOP_WORDS_KEY = "stop-words";
+        private const string AUTOCOMPLETE_SEARCH_KEY =  "autocomplete-search";
 
         public static string PropertyIndex => Constants.PropertyIndex;
 
@@ -126,7 +128,7 @@ namespace SmartAprtmentData.Indexer
 
                         // Define Edge n-gram tokenizer for autocomplete
                         .Tokenizers(tok => tok
-                            .EdgeNGram("autocomplete-search", e => e
+                            .EdgeNGram(AUTOCOMPLETE_SEARCH_KEY, e => e
                                 .MinGram(3)
                                 .MaxGram(5)
                                 .TokenChars(TokenChar.Letter, TokenChar.Digit)
@@ -135,16 +137,16 @@ namespace SmartAprtmentData.Indexer
 
                         // Setup Stop Token Filter to remove stop words
                         .TokenFilters(tokenfilters => tokenfilters
-                            .Stop("stop-words", w => w
-                                .StopWords("_english_ ")
+                            .Stop(STOP_WORDS_KEY, w => w
+                                .StopWords("_english_", "trim", "lowercase")
                             )
                         )
 
                         // Bring it all together in a custom analyzer
                         .Analyzers(analyzers => analyzers
                             .Custom(SMART_ANALYZER_KEY, c => c
-                                .Tokenizer("autocomplete-search")
-                                .Filters("stop-words")
+                                .Tokenizer(AUTOCOMPLETE_SEARCH_KEY)
+                                .Filters(STOP_WORDS_KEY)
                             )
                         );
 
