@@ -20,7 +20,6 @@ namespace SmartApartmentData.Core.Services
         {
             try
             {
-                // TODO: Do autocomplete
 
                 var result = _openSearchRepository.Search(searchPhrase, markets, limit);
 

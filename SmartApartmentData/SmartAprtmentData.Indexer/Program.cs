@@ -8,6 +8,7 @@ namespace SmartAprtmentData.Indexer
 {
     class Program
     {
+        private const string SMART_ANALYZER_KEY = "smart-analyzer";
 
         public static string PropertyIndex => Constants.PropertyIndex;
 
@@ -39,7 +40,6 @@ namespace SmartAprtmentData.Indexer
 
         private static void CreateIndex(ElasticClient client)
         {
-            // TODO: Go over indexing again and do cleanups
 
             foreach (var index in new[] { PropertyIndex, ManagementIndex })
             {
@@ -50,15 +50,29 @@ namespace SmartAprtmentData.Indexer
                 {
 
                     client.Indices.Create(index, c => c
+                        .Settings(c => c
+                        .Analysis(Analysis))
                         .Map<PropertyModel>(map => map
                             .AutoMap()
                             .Properties(p => p
                                 .Text(c => c
                                     .Name(n => n.Name)
-                                    .Analyzer("standard"))
+                                    .Analyzer(SMART_ANALYZER_KEY))
                                 .Text(c => c
                                     .Name(n => n.FormerName)
-                                    .Analyzer("standard"))
+                                    .Analyzer(SMART_ANALYZER_KEY))
+                                .Text(c => c
+                                    .Name(n => n.City)
+                                    .Analyzer(SMART_ANALYZER_KEY))
+                                .Text(c => c
+                                    .Name(n => n.Market)
+                                    .Analyzer(SMART_ANALYZER_KEY))
+                                .Text(c => c
+                                    .Name(n => n.State)
+                                    .Analyzer(SMART_ANALYZER_KEY))
+                                .Text(c => c
+                                    .Name(n => n.StreetAddress)
+                                    .Analyzer(SMART_ANALYZER_KEY))
                             )));
 
                 }
@@ -67,15 +81,20 @@ namespace SmartAprtmentData.Indexer
                 {
 
                     client.Indices.Create(index, c => c
+                        .Settings(c => c
+                        .Analysis(Analysis))
                         .Map<ManagementModel>(map => map
                             .AutoMap()
                             .Properties(p => p
                                 .Text(c => c
                                     .Name(n => n.Name)
-                                    .Analyzer("standard"))
+                                    .Analyzer(SMART_ANALYZER_KEY))
                                 .Text(c => c
                                     .Name(n => n.Market)
-                                    .Analyzer("standard"))
+                                    .Analyzer(SMART_ANALYZER_KEY))
+                                .Text(c => c
+                                    .Name(n => n.State)
+                                    .Analyzer(SMART_ANALYZER_KEY))
                             )));
 
                 }
@@ -104,26 +123,28 @@ namespace SmartAprtmentData.Indexer
         }
 
         private static AnalysisDescriptor Analysis(AnalysisDescriptor analysis) => analysis
-                        .Tokenizers(tokenizers => tokenizers
-                            .Pattern("nuget-id-tokenizer", p => p.Pattern(@"\W+"))
+
+                        // Define Edge n-gram tokenizer for autocomplete
+                        .Tokenizers(tok => tok
+                            .EdgeNGram("autocomplete-search", e => e
+                                .MinGram(3)
+                                .MaxGram(5)
+                                .TokenChars(TokenChar.Letter, TokenChar.Digit)
+                            )
                         )
+
+                        // Setup Stop Token Filter to remove stop words
                         .TokenFilters(tokenfilters => tokenfilters
-                            .WordDelimiter("nuget-id-words", w => w
-                                .SplitOnCaseChange()
-                                .PreserveOriginal()
-                                .SplitOnNumerics()
-                                .GenerateNumberParts(false)
-                                .GenerateWordParts()
+                            .Stop("stop-words", w => w
+                                .StopWords("_english_ ")
                             )
                         )
+
+                        // Bring it all together in a custom analyzer
                         .Analyzers(analyzers => analyzers
-                            .Custom("nuget-id-analyzer", c => c
-                                .Tokenizer("nuget-id-tokenizer")
-                                .Filters("nuget-id-words", "lowercase")
-                            )
-                            .Custom("nuget-id-keyword", c => c
-                                .Tokenizer("keyword")
-                                .Filters("lowercase")
+                            .Custom(SMART_ANALYZER_KEY, c => c
+                                .Tokenizer("autocomplete-search")
+                                .Filters("stop-words")
                             )
                         );
 
