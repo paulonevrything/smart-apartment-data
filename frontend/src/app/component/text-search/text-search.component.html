@@ -1,0 +1,49 @@
+<mat-card>
+
+    <div class="container">
+
+        <mat-card-title>Search word in notebook</mat-card-title>
+
+
+        <form class="text-search-form-group" [formGroup]="textSearchformGroup" (ngSubmit)="searchWordInNotepad(textSearchformGroup.value)">
+
+            <div class="text-search">
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter a word</mat-label>
+                    <input formControlName="searchWord" matInput #input placeholder="Ex. Amoeba">
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Paste the notebook text here</mat-label>
+                    <textarea rows="5" cols="100" matInput formControlName="notepadText"></textarea>
+                </mat-form-field>
+
+                <br>
+                <button [disabled]="!textSearchformGroup.valid" type="submit" mat-flat-button color="primary">Submit</button>
+            </div>
+
+        </form>
+
+        <!-- <mat-card *ngIf="responseBody">
+
+            <mat-card-subtitle>Results</mat-card-subtitle>
+
+            <div class="search-results">
+
+                <p>The frequency of the search word is: {{responseBody.wordFrequency}}</p>
+                <p>Similar words to it are:</p>
+                <mat-list>
+                    <mat-list-item *ngFor="let word of responseBody.similarWords">
+                        <div mat-line>{{word}}</div>
+                    </mat-list-item>
+                </mat-list>
+
+            </div>
+
+        </mat-card> -->
+
+
+
+    </div>
+
+</mat-card>

@@ -1,0 +1,16 @@
+.container {
+    padding: 20px;
+    padding-top: 100px;
+    min-height: 78vh;
+    text-align: center;
+}
+
+.text-search-form-group {
+    margin: 20px;
+    padding: 20px;
+}
+
+.mat-form-field {
+    margin-left: 8px;
+    width: 50%;
+}

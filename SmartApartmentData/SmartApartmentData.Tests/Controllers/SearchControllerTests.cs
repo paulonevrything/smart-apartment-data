@@ -2,20 +2,18 @@
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SmartApartmentData.Api.Controllers;
 using SmartApartmentData.Core.Services.Interfaces;
 using SmartApartmentData.Persistence.Repository.Interfaces;
 
 namespace SmartApartmentData.Tests.Controllers
 {
-    [TestClass]
     public class SearchControllerTests
     {
         Mock<ISearchService> _searchService;
         Mock<IOpenSearchRepository> _openSearchService;
 
-        [TestMethod]
+        [Test]
         public void Search_ShouldReturnEmptyArray()
         {
             // Arrange
@@ -36,7 +34,7 @@ namespace SmartApartmentData.Tests.Controllers
             var result = controller.Search("and", null, 0) as OkObjectResult;
 
             // Assert
-            NUnit.Framework.Assert.AreEqual(actionResult, result);
+            Assert.AreEqual(actionResult, result);
             //result.Value;
         }
 
