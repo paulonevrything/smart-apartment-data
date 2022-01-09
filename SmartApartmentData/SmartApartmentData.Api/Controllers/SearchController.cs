@@ -9,7 +9,6 @@ namespace SmartApartmentData.Api.Controllers
     [ApiController]
     public class SearchController : ControllerBase
     {
-        // TODO: Write tests
 
         private readonly ISearchService _searchService;
         public SearchController(ISearchService searchService)

@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartApartmentData.Api", "SmartApartmentData.Api\SmartApartmentData.Api.csproj", "{331AA400-9022-448F-9BE7-7A94C70D6FD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartApartmentData.Api", "SmartApartmentData.Api\SmartApartmentData.Api.csproj", "{331AA400-9022-448F-9BE7-7A94C70D6FD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartApartmentData.Core", "SmartApartmentData.Core\SmartApartmentData.Core.csproj", "{F3F7EE88-3CDF-4475-89A9-A74C76D162DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartApartmentData.Core", "SmartApartmentData.Core\SmartApartmentData.Core.csproj", "{F3F7EE88-3CDF-4475-89A9-A74C76D162DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartApartmentData.Persistence", "SmartApartmentData.Persistence\SmartApartmentData.Persistence.csproj", "{D63556C8-9D1B-4FEC-B004-A3DE5DC98514}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartApartmentData.Persistence", "SmartApartmentData.Persistence\SmartApartmentData.Persistence.csproj", "{D63556C8-9D1B-4FEC-B004-A3DE5DC98514}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartApartmentData.Domain", "SmartApartmentData.Domain\SmartApartmentData.Domain.csproj", "{A255BBC4-CE31-4D03-A365-0758FBF79A36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartApartmentData.Domain", "SmartApartmentData.Domain\SmartApartmentData.Domain.csproj", "{A255BBC4-CE31-4D03-A365-0758FBF79A36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartApartmentData.Tests", "SmartApartmentData.Tests\SmartApartmentData.Tests.csproj", "{551CCF7E-02D4-4098-A397-961F5A8AC3AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartApartmentData.Tests", "SmartApartmentData.Tests\SmartApartmentData.Tests.csproj", "{551CCF7E-02D4-4098-A397-961F5A8AC3AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAprtmentData.Indexer", "SmartAprtmentData.Indexer\SmartAprtmentData.Indexer.csproj", "{5F10BD46-CB37-4C50-A4F3-BD02DD5F7943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAprtmentData.Indexer", "SmartAprtmentData.Indexer\SmartAprtmentData.Indexer.csproj", "{5F10BD46-CB37-4C50-A4F3-BD02DD5F7943}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
