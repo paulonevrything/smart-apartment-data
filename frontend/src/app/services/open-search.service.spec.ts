@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TextSearchService } from './text-search.service';
+import { OpenSearchService } from './open-search.service';
 
-describe('TextSearchService', () => {
-  let service: TextSearchService;
+describe('OpenSearchService', () => {
+  let service: OpenSearchService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TextSearchService);
+    service = TestBed.inject(OpenSearchService);
   });
 
   it('should be created', () => {

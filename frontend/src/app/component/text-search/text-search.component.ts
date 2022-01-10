@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { TextSearchService } from 'src/app/services/text-search.service';
+import { OpenSearchService } from 'src/app/services/open-search.service';
 
 @Component({
   selector: 'app-text-search',
@@ -9,10 +9,11 @@ import { TextSearchService } from 'src/app/services/text-search.service';
 })
 export class TextSearchComponent implements OnInit {
 
-  
   textSearchformGroup!: FormGroup;
 
-  constructor(private fb: FormBuilder, private textSearchService: TextSearchService) { }
+  searchResults: any;
+
+  constructor(private fb: FormBuilder, private service: OpenSearchService) { }
 
   ngOnInit(): void {
 
@@ -22,15 +23,25 @@ export class TextSearchComponent implements OnInit {
         Validators.required
       ])),
 
-      notepadText: new FormControl('', Validators.compose([
-        Validators.required
+      market: new FormControl([], Validators.compose([
       ])),
     })
 
   }
 
-  searchWordInNotepad(formValue: any) {
+  search(formValue: any) {
 
+    let markets = null;
+    if (formValue.market.length > 0) {
+      markets = formValue.market.split(",")
+    }
+
+    this.service.search(formValue.searchWord, markets).subscribe(response => {
+
+      console.log(response);
+      this.searchResults =  response;
+
+    });
   }
 
 }

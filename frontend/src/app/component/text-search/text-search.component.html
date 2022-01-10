@@ -2,47 +2,46 @@
 
     <div class="container">
 
-        <mat-card-title>Search word in notebook</mat-card-title>
+        <mat-card-title>Find Apartments or Managements</mat-card-title>
 
 
-        <form class="text-search-form-group" [formGroup]="textSearchformGroup" (ngSubmit)="searchWordInNotepad(textSearchformGroup.value)">
+        <form class="text-search-form-group" [formGroup]="textSearchformGroup" (ngSubmit)="search(textSearchformGroup.value)">
 
             <div class="text-search">
                 <mat-form-field appearance="fill">
-                    <mat-label>Enter a word</mat-label>
-                    <input formControlName="searchWord" matInput #input placeholder="Ex. Amoeba">
+                    <mat-label>Search</mat-label>
+                    <input formControlName="searchWord" matInput #input placeholder="Ex. stones and rocks">
                 </mat-form-field>
 
                 <mat-form-field class="example-full-width" appearance="fill">
-                    <mat-label>Paste the notebook text here</mat-label>
-                    <textarea rows="5" cols="100" matInput formControlName="notepadText"></textarea>
+                    <mat-label>Market (add multiple market by separating with a comma)</mat-label>
+                    <input formControlName="market" matInput #input placeholder="Ex. Houston">
                 </mat-form-field>
 
                 <br>
-                <button [disabled]="!textSearchformGroup.valid" type="submit" mat-flat-button color="primary">Submit</button>
+                <button [disabled]="!textSearchformGroup.valid" type="submit" mat-flat-button color="primary">Search</button>
             </div>
 
         </form>
 
-        <!-- <mat-card *ngIf="responseBody">
+        <mat-card *ngIf="searchResults">
 
-            <mat-card-subtitle>Results</mat-card-subtitle>
+            <mat-card-subtitle>Search Results</mat-card-subtitle>
 
             <div class="search-results">
 
-                <p>The frequency of the search word is: {{responseBody.wordFrequency}}</p>
-                <p>Similar words to it are:</p>
-                <mat-list>
+                <p>
+                    {{searchResults}}
+                </p>
+                <!-- <mat-list>
                     <mat-list-item *ngFor="let word of responseBody.similarWords">
                         <div mat-line>{{word}}</div>
                     </mat-list-item>
-                </mat-list>
+                </mat-list> -->
 
             </div>
 
-        </mat-card> -->
-
-
+        </mat-card>
 
     </div>
 
