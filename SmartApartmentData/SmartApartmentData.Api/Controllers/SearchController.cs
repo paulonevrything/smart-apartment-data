@@ -22,8 +22,6 @@ namespace SmartApartmentData.Api.Controllers
             if (String.IsNullOrEmpty(searchPhrase))
                 return BadRequest();
 
-            var res = _searchService.Search(searchPhrase, markets, limit);
-
             return Ok(_searchService.Search(searchPhrase, markets, limit));
         }
 

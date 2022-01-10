@@ -14,3 +14,8 @@
     margin-left: 8px;
     width: 50%;
 }
+
+.search-results {
+    text-align: left;
+    max-width: fit-content;
+}

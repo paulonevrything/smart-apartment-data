@@ -24,20 +24,15 @@
 
         </form>
 
-        <mat-card *ngIf="searchResults">
+        <mat-card class="search-results" *ngIf="searchResults">
 
             <mat-card-subtitle>Search Results</mat-card-subtitle>
 
-            <div class="search-results">
+            <div>
 
-                <p>
+                <pre>
                     {{searchResults}}
-                </p>
-                <!-- <mat-list>
-                    <mat-list-item *ngFor="let word of responseBody.similarWords">
-                        <div mat-line>{{word}}</div>
-                    </mat-list-item>
-                </mat-list> -->
+                </pre>
 
             </div>
 

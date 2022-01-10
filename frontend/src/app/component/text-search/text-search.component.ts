@@ -38,8 +38,7 @@ export class TextSearchComponent implements OnInit {
 
     this.service.search(formValue.searchWord, markets).subscribe(response => {
 
-      console.log(response);
-      this.searchResults =  response;
+      this.searchResults =  JSON.stringify(response, null, 2);
 
     });
   }
